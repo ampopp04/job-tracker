@@ -1,0 +1,8 @@
+rootProject.name = 'job-tracker'
+
+//Dynamically include root-level folders as projects it not in exclusion list
+rootProject.projectDir.eachFile groovy.io.FileType.DIRECTORIES, {
+    if (!EXCLUDE_PROJECT_DIRECTORIES.split(',').contains(it.name)) {
+        include it.name
+    }
+}

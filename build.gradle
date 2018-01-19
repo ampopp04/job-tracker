@@ -1,0 +1,17 @@
+apply plugin: 'com.system.build'
+
+group = project.group
+
+buildscript { scriptHandler ->
+    repositories { maven { credentials {} } }
+    repositories.maven.credentials.username = "${nexusUsername}"
+    repositories.maven.credentials.password = "${nexusPassword}"
+    repositories.maven.url = "${repositoryUrl}"
+    dependencies {
+        classpath group: 'com.system', name: 'build', version: '1.0'
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = project.gradleWrapperVersion
+}

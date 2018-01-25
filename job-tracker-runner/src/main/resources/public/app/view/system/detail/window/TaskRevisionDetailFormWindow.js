@@ -69,6 +69,3 @@ Ext.define('System.view.system.detail.window.TaskRevisionDetailFormWindow', {
     }
 
 });
-
-
-

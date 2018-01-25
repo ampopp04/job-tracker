@@ -4,6 +4,7 @@ import com.job.tracker.job.Job;
 import com.job.tracker.task.Task;
 import com.job.tracker.task.TaskRepository;
 import com.system.db.repository.base.entity.SystemRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,6 @@ import java.util.*;
 
 import static com.system.util.collection.CollectionUtils.iterable;
 import static com.system.util.collection.CollectionUtils.iterate;
-import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 @RestController
 public class JobTreeController {
@@ -41,7 +41,7 @@ public class JobTreeController {
         Map<Integer, TreeJobDTO> treeJobDTOIdMap = new HashMap<>();
 
         iterate(iterable(jobSet), job -> {
-            TreeJobDTO treeJobDTO = TreeJobDTO.newInstance(job, !isEmpty(filter));
+            TreeJobDTO treeJobDTO = TreeJobDTO.newInstance(job, expandRow(filter));
             treeJobDTOIdMap.put(job.getId(), treeJobDTO);
         });
 
@@ -51,7 +51,7 @@ public class JobTreeController {
             if (treeJobDTOIdMap.containsKey(task.getJob().getId())) {
                 treeJobDTO = treeJobDTOIdMap.get(task.getJob().getId());
             } else {
-                treeJobDTO = TreeJobDTO.newInstance(task.getJob(), !isEmpty(filter));
+                treeJobDTO = TreeJobDTO.newInstance(task.getJob(), expandRow(filter));
                 treeJobDTOIdMap.put(task.getJob().getId(), treeJobDTO);
             }
 
@@ -61,6 +61,14 @@ public class JobTreeController {
         return new ArrayList<>(treeJobDTOIdMap.values());
     }
 
+    private boolean expandRow(String filter) {
+        //Only expand rows if the filter is not our default login filter
+        //This means filter contains a single {"operator" and has "property":"project.branch.name
+        if (StringUtils.countMatches(filter, "{\"operator\"") == 1 && StringUtils.contains(filter, "\"property\":\"project.branch.name")) {
+            return false;
+        }
+        return true;
+    }
 
     public SystemRepository<Job, Integer> getJobRepository() {
         return jobRepository;

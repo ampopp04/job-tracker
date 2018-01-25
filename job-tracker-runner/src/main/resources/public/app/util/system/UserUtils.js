@@ -42,11 +42,18 @@ Ext.define('System.util.system.UserUtils', {
          */
         setLoggedInEmployee: function () {
 
-            if (!Ext.isEmpty(localStorage.loggedInEmployee) && !Ext.isEmpty(localStorage.username)) {
+            var loggedInEmployeeDecoded = System.util.system.UserUtils.getLoggedInEmployee();
+            if (!Ext.isEmpty(loggedInEmployeeDecoded) && !Ext.isEmpty(loggedInEmployeeDecoded.name) && !Ext.isEmpty(localStorage.username)) {
                 return;
             }
 
             var configureLoggedInEmployee = function (securityUserRecord) {
+
+                localStorage.setItem("loggedInEmployee", Ext.JSON.encode({
+                    systemSecurityUserId: securityUserRecord.data.id,
+                    admin: securityUserRecord.data.admin
+                }));
+
                 //Get Employee Store
                 System.util.component.GridColumnUtils.getStoreByModelName('Employees', function (store, scope) {
                     //Retrieve the associated employee record for this logged in user
@@ -54,28 +61,30 @@ Ext.define('System.util.system.UserUtils', {
                         store,
                         scope.data.name,
                         function (records, operation, success, scope) {
+                            var branch = undefined;
+                            var employee = {};
+
                             //Set Logged in Employee
                             if (success && records && records[0] && records[0].data) {
-
                                 var employeeRecord = records[0];
-                                var employee = employeeRecord.data;
+                                employee = employeeRecord.data;
 
-                                var branch =
+                                branch =
                                     employeeRecord._branch && employeeRecord._branch.data && employeeRecord._branch.data.name ?
                                         employeeRecord._branch.data.name : employeeRecord.branch && employeeRecord.branch && employeeRecord.branch.name ?
                                         employeeRecord.branch.name : employeeRecord.data && employeeRecord.data.branch && employeeRecord.data.branch.name ?
                                             employeeRecord.data.branch.name : "La Mirada";
-
-                                localStorage.setItem("loggedInEmployee", Ext.JSON.encode({
-                                    name: employee.name,
-                                    firstName: employee.firstName,
-                                    lastName: employee.lastName,
-                                    branch: branch,
-                                    systemSecurityUserId: scope.data.id,
-                                    id: employee.id
-                                }));
-
                             }
+
+                            localStorage.setItem("loggedInEmployee", Ext.JSON.encode({
+                                name: employee.name,
+                                firstName: employee.firstName,
+                                lastName: employee.lastName,
+                                branch: branch,
+                                systemSecurityUserId: scope.data.id,
+                                admin: scope.data.admin,
+                                id: employee.id
+                            }));
 
                         },
                         undefined,
@@ -84,6 +93,7 @@ Ext.define('System.util.system.UserUtils', {
 
 
                 }, securityUserRecord);
+
             };
 
             try {

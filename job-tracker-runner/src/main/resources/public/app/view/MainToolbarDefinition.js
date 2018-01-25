@@ -64,9 +64,6 @@ Ext.define('System.view.MainToolbarDefinition', {
                     })
                 }]);
 
-            System.util.system.JobUtils.createWindow('System.view.job.tracker.dashboard.DashboardWindow');
-
-
             Ext.TaskManager.start({
                 run: function () {
                     var task = this;
@@ -90,6 +87,7 @@ Ext.define('System.view.MainToolbarDefinition', {
                 mainToolbar: window
             });
 
+            System.util.system.JobUtils.createWindow('System.view.job.tracker.dashboard.DashboardWindow');
 
         }
     }

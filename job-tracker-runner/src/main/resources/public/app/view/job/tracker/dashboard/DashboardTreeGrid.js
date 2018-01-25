@@ -196,6 +196,9 @@ Ext.define('System.view.job.tracker.dashboard.DashboardTreeGrid', {
 
         treeGrid.store.sort('taskNumber', 'ASC');
 
+        System.util.component.GridColumnUtils.fullyInitializeStoreByModelName("Tasks");
+        System.util.component.GridColumnUtils.fullyInitializeStoreByModelName("Jobs");
+
     },
 
     configureGridStoreRefreshListeners: function (store, gridRefreshFunction, treeGrid) {

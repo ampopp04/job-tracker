@@ -166,9 +166,9 @@ public class V16__task_initial_schema extends TableCreationMigration {
     }
 
     private Collection<SystemSecurityRole> getSecurityRoleFromMemberOf(String memberOf) {
-        SystemSecurityRole adminRole = getSystemSecurityRoleRepository().findByName(SystemSecurityRoles.ROLE_ADMIN.toString());
+        // SystemSecurityRole adminRole = getSystemSecurityRoleRepository().findByName(SystemSecurityRoles.ROLE_ADMIN.toString());
         SystemSecurityRole userRole = getSystemSecurityRoleRepository().findByName(SystemSecurityRoles.ROLE_USER.toString());
-        Collection<SystemSecurityRole> roles = Arrays.asList(adminRole, userRole);
+        Collection<SystemSecurityRole> roles = Arrays.asList(userRole);
         return roles;
     }
 

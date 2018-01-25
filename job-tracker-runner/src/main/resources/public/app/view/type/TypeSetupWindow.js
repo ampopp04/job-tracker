@@ -8,7 +8,7 @@ Ext.define('System.view.type.TypeSetupWindow', {
     extend: 'System.view.component.window.tab.grid.TabGridSystemWindow',
 
 
-    title: 'Type Management',
+    title: 'Type Setup',
     width: 1200,
 
     constructor: function (config) {

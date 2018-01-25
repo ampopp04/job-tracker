@@ -24,6 +24,10 @@ import com.system.db.repository.base.named.NamedEntityRepository;
 import com.system.db.schema.table.SchemaTable;
 import com.system.db.schema.table.column.SchemaTableColumn;
 import com.system.db.schema.table.column.SchemaTableColumnRepository;
+import com.system.export.generator.content.SystemExportGeneratorContent;
+import com.system.export.task.assignment.SystemExportTaskAssignment;
+import com.system.export.task.type.SystemExportTaskType;
+import com.system.export.template.SystemExportTemplate;
 import com.system.security.privilege.SystemSecurityPrivilege;
 import com.system.security.role.SystemSecurityRole;
 import com.system.security.user.SystemSecurityUser;
@@ -69,6 +73,41 @@ public class V18__configure_ui_defaults extends BaseDataMigration {
 
     @Override
     protected void insertData() {
+
+        updateEntityUi(SystemExportTaskType.class,
+                update("name", "Name"),
+                update("description", "Description")
+        );
+
+        updateEntityUi(SystemExportGeneratorContent.class,
+                update("name", "Name"),
+                update("description", "Description"),
+
+                update("systemExportFileType", "File Type"),
+                update("systemExportContentDefinition", "Report Definition"),
+                update("exportContent", "Generated Report")
+        );
+
+        updateEntityUi(SystemExportTemplate.class,
+                update("name", "Name"),
+                update("description", "Description"),
+
+                update("systemExportTemplateType", "Template Type"),
+                update("systemExportFileType", "File Type"),
+                update("templateContent", "Report Template")
+        );
+
+        updateEntityUi(SystemExportTaskAssignment.class,
+                update("name", "Name"),
+                update("description", "Description"),
+
+                update("systemExportTask", "Report Task"),
+
+                update("schemaTable", "Report Entity"),
+                update("fkFieldId", "Report Entity ID", "{hidden:true}"),
+
+                update("active", "Enabled")
+        );
 
         updateEntityUi(EntityExpressionOperationType.class,
                 update("name", "Name"),
@@ -131,6 +170,9 @@ public class V18__configure_ui_defaults extends BaseDataMigration {
 
                 update("userPrincipalName", "User Principal Name", "{allowBlank:false}"),
                 update("distinguishedName", "Distinguished Name", "{allowBlank:false}"),
+
+                update("memberOf", "Roles"),
+                update("admin", "Admin"),
 
                 update("enabled", "Active")
         );
@@ -242,7 +284,8 @@ public class V18__configure_ui_defaults extends BaseDataMigration {
 
         updateEntityUi(TaskHour.class,
                 update("task", "Task", "{allowBlank:false}", "{hidden:true}"),
-                update("taskRevision", "Revision", "{allowBlank:false}"),
+
+                update("taskRevision", "Revision", "{allowBlank:false,displayTpl: Ext.create('Ext.XTemplate', '<tpl for=\".\">', 'Rev {revisionNumber} - {name}', '</tpl>' )}", "{ filter: 'entity', displayRenderer: function (value, metaData) { var revNumber = System.util.data.RecordUtils.getRecordValue(metaData.record, 'revisionNumber', 'taskRevision'); if (revNumber != undefined) { value = 'Rev ' + revNumber + ' - ' + value; } return value; } }"),
 
                 update("date", "Date", "{xtype: 'datefield',anchor: '100%',value: new Date(),format: 'm-d-Y',allowBlank:false}"),
                 update("employee", "Employee", "{allowBlank:false}"),

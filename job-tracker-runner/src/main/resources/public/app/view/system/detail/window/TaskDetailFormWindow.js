@@ -48,6 +48,7 @@ Ext.define('System.view.system.detail.window.TaskDetailFormWindow', {
                         {"operator": "=", "value": fkFieldId, "property": "task.id"}
                     ],
                     defaultSearchFilterForced: true
+                    
                 }
             );
 

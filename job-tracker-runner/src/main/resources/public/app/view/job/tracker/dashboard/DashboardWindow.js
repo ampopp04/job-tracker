@@ -5,13 +5,41 @@
  * @author Andrew
  */
 Ext.define('System.view.job.tracker.dashboard.DashboardWindow', {
-    extend: 'System.view.component.window.tab.TabSystemWindow',
+    extend: 'System.view.component.window.BaseSystemWindow',
 
-    requires: [],
+    requires: [
+        'Ext.Img'
+    ],
 
-    alwaysOnTop: -1,
+    items: [{
 
-    tabs: [{xtype: 'dashboard-tree-grid'}],
+        xtype: 'panel',
+        region: 'center',
+        layout: 'fit',
+
+        dockedItems: false,
+        tbar: false,
+
+        header: {
+            style: 'padding:2px 2px 2px 6px',
+            titlePosition: 1,
+            items: [{
+                xtype: 'image',
+                src: '/resources/logo.png',
+                style: 'background-color: #005d94;',
+                height: 33,
+                width: 112
+            }]
+        },
+
+        items: [
+            {
+                xtype: 'dashboard-tree-grid'
+            }
+        ]
+
+    }],
+
 
     header: {
         titlePosition: 0,
@@ -27,6 +55,7 @@ Ext.define('System.view.job.tracker.dashboard.DashboardWindow', {
         }]
     },
 
+    alwaysOnTop: -1,
     maximized: true,
     closable: false,
     draggable: false,
@@ -35,13 +64,6 @@ Ext.define('System.view.job.tracker.dashboard.DashboardWindow', {
         if (config == undefined) {
             config = {};
         }
-
-        config.tabs = this.tabs;
-        config.header = this.header;
-
-        config.maximized = this.maximized;
-        config.closable = this.closable;
-        config.draggable = this.draggable;
 
         this.configureAdminHeader();
 

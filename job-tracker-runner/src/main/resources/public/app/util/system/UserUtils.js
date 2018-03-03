@@ -42,8 +42,14 @@ Ext.define('System.util.system.UserUtils', {
          */
         setLoggedInEmployee: function () {
 
+            if (window.loggingInEmployee == true) {
+                return;
+            }
+            window.loggingInEmployee = true;
+
             var loggedInEmployeeDecoded = System.util.system.UserUtils.getLoggedInEmployee();
             if (!Ext.isEmpty(loggedInEmployeeDecoded) && !Ext.isEmpty(loggedInEmployeeDecoded.name) && !Ext.isEmpty(localStorage.username)) {
+                window.loggingInEmployee = false;
                 return;
             }
 
@@ -85,6 +91,8 @@ Ext.define('System.util.system.UserUtils', {
                                 admin: scope.data.admin,
                                 id: employee.id
                             }));
+
+                            window.loggingInEmployee = true;
 
                         },
                         undefined,

@@ -24,6 +24,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import static com.job.tracker.Employee.security.util.LdapDataAccessUtils.*;
+import static com.system.util.string.StringUtils.isEmpty;
+
 /**
  * The <class>EmployeeSecurityUserDetailsContextMapper</class> defines
  * the interceptor for user login to auto create/update employee entries
@@ -68,7 +71,7 @@ public class EmployeeSecurityUserDetailsContextMapper extends SystemSecurityUser
 
         try {
             LogUtils.logInfo("Updating User Employee Details with Context - [" + attributesToString(ctx.getAttributes()) + "]");
-            createOrUpdateSecurityData(ctx, ctx.getStringAttribute("samaccountname"), authorities);
+            createOrUpdateSecurityData(ctx, getUsername(ctx), authorities);
         } catch (Exception e) {
             LogUtils.logInfo("Error Updating User Employee Details  - [" + username + "] - Error: " + e.getLocalizedMessage());
         }
@@ -112,7 +115,7 @@ public class EmployeeSecurityUserDetailsContextMapper extends SystemSecurityUser
     }
 
     private void createOrUpdateEmployeeData(DirContextOperations ctx, String username, Collection<? extends GrantedAuthority> authorities, SystemSecurityUser systemSecurityUser) {
-        String fullName = ctx.getStringAttribute("name") + " " + ctx.getStringAttribute("givenname");
+        String fullName = getFullName(ctx);
         Employee employee = getEmployeeRepository().findByName(fullName);
 
         if (employee == null) {
@@ -131,21 +134,20 @@ public class EmployeeSecurityUserDetailsContextMapper extends SystemSecurityUser
 
     private SystemSecurityUser createSystemSecurityUser(DirContextOperations ctx, String username, Collection<? extends GrantedAuthority> authorities) {
         SystemSecurityUser systemSecurityUser = new SystemSecurityUser();
-        systemSecurityUser.setEnabled(true);
         updateSystemSecurityUser(systemSecurityUser, ctx, username, authorities);
         return systemSecurityUser;
     }
 
     private SystemSecurityUser updateSystemSecurityUser(SystemSecurityUser systemSecurityUser, DirContextOperations ctx, String username, Collection<? extends GrantedAuthority> authorities) {
-        // systemSecurityUser.setName(ctx.getStringAttribute("name"));
-        systemSecurityUser.setFirstName(ctx.getStringAttribute("name"));
-        systemSecurityUser.setLastName(ctx.getStringAttribute("givenname"));
+        systemSecurityUser.setFirstName(getFirstName(ctx));
+        systemSecurityUser.setLastName(getLastName(ctx));
         systemSecurityUser.setUsername(username);
 
-        systemSecurityUser.setDistinguishedName(ctx.getStringAttribute("distinguishedName"));
-        systemSecurityUser.setEnabled(true);//Boolean.valueOf(ctx.getStringAttribute("enabled")));
-        systemSecurityUser.setRoles(getSystemSecurityRoleList());
-        systemSecurityUser.setUserPrincipalName(ctx.getStringAttribute("userPrincipalName"));
+        systemSecurityUser.setDistinguishedName(getDistinguishedName(ctx));
+        systemSecurityUser.setEnabled(systemSecurityUser.isNew() ? true : systemSecurityUser.getEnabled());
+        systemSecurityUser.setRoles(systemSecurityUser.isNew() ? getSystemSecurityRoleList() : systemSecurityUser.getRoles());
+        systemSecurityUser.setUserPrincipalName(getUserPrincipalName(ctx));
+        systemSecurityUser.setMemberOf(getUserMemberOf(ctx));
 
         return getSystemSecurityUserRepository().save(systemSecurityUser);
     }
@@ -153,17 +155,55 @@ public class EmployeeSecurityUserDetailsContextMapper extends SystemSecurityUser
     private List<SystemSecurityRole> getSystemSecurityRoleList() {
         // SystemSecurityRole adminRole = getSystemSecurityRoleRepository().findByName(SystemSecurityRoles.ROLE_ADMIN.toString());
         SystemSecurityRole userRole = getSystemSecurityRoleRepository().findByName(SystemSecurityRoles.ROLE_USER.toString());
-
         return Arrays.asList(userRole);
     }
 
     private Employee updateEmployee(Employee employee, SystemSecurityUser systemSecurityUser, DirContextOperations ctx, String username, Collection<? extends GrantedAuthority> authorities) {
+        employee.setFirstName(getFirstName(ctx));
+        employee.setLastName(getLastName(ctx));
 
-        employee.setFirstName(ctx.getStringAttribute("name"));
-        employee.setLastName(ctx.getStringAttribute("givenname"));
-        //employee.setBranch(getBranchRepository().findByName(ctx.getStringAttribute("branch")));
-        //employee.setDepartment(getDepartmentRepository().findByName(ctx.getStringAttribute("department")));
+        employee.setCompany(getUserCompanyName(ctx));
 
+        try {
+            String userBranchName = getUserBranchName(ctx);
+            if (!isEmpty(userBranchName)) {
+                employee.setBranch(getBranchRepository().findByName(userBranchName));
+            }
+        } catch (Exception e) {
+            LogUtils.logInfo("Error Updating User Details  - [" + username + "] - Error: " + e.getLocalizedMessage());
+        }
+
+        try {
+            String userDepartmentName = getUserDepartmentName(ctx);
+            if (!isEmpty(userDepartmentName)) {
+                employee.setDepartment(getDepartmentRepository().findByName(userDepartmentName));
+            }
+        } catch (Exception e) {
+            LogUtils.logInfo("Error Updating User Details  - [" + username + "] - Error: " + e.getLocalizedMessage());
+        }
+
+        employee.setEmailAddress(getUserEmailAddress(ctx));
+        employee.setJobTitle(getUserJobTitle(ctx));
+
+        employee.setStreetAddress(getUserStreetAddress(ctx));
+        employee.setCity(getUserCity(ctx));
+        employee.setState(getUserState(ctx));
+        employee.setZipCode(getUserZipCode(ctx));
+        employee.setCountry(getUserCountry(ctx));
+
+        employee.setBusinessPhone(getUserBusinessPhone(ctx));
+        employee.setMobilePhone(getUserMobilePhone(ctx));
+
+        try {
+            String managerFullName = getUserManagerFullName(ctx);
+            if (!isEmpty(managerFullName)) {
+                employee.setManager(getEmployeeRepository().findByName(managerFullName));
+            }
+        } catch (Exception e) {
+            LogUtils.logInfo("Error Updating User Details  - [" + username + "] - Error: " + e.getLocalizedMessage());
+        }
+
+        employee.setEnabled(systemSecurityUser.getEnabled());
         employee.setSystemSecurityUser(systemSecurityUser);
 
         return getEmployeeRepository().save(employee);

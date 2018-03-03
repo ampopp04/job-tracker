@@ -11,8 +11,6 @@ Ext.define('System.view.job.tracker.dashboard.DashboardTreeGrid', {
 
     xtype: 'dashboard-tree-grid',
 
-    title: 'Dashboard',
-
     store: 'JobTreeStore',
 
     listeners: {
@@ -79,10 +77,15 @@ Ext.define('System.view.job.tracker.dashboard.DashboardTreeGrid', {
 
         //Once done update to be within the search fields initComponent method and the render call will only execute
         //if the search field hasn't been initialized
-        me.createdSearchFilter.configureSearchField(me.createdSearchFilter);
+        me.createdSearchFilter.configureSearchField.call(me.createdSearchFilter, me.createdSearchFilter);
+
+        /**
+         *Create Job Tree Store and initialize it's first load with a non-filtered zero search depth
+         */
+        var jobTreeStore = new System.view.job.data.store.JobTreeStore({proxy: {extraParams: {'searchDepth': -1}}});
 
         Ext.apply(me, {
-            store: new System.view.job.data.store.JobTreeStore(),
+            store: jobTreeStore,
 
             dockedItems: [{
                 dock: 'top',
@@ -136,7 +139,7 @@ Ext.define('System.view.job.tracker.dashboard.DashboardTreeGrid', {
                         }];
 
                         //Initialize and configure our search to execute our initial load
-                        me.configureSearchField(me);
+                        me.configureSearchField.call(me, me);
 
                         //The user is loaded so we are done attempting
                         me.userIsLoaded = true;
@@ -148,7 +151,7 @@ Ext.define('System.view.job.tracker.dashboard.DashboardTreeGrid', {
 
                     if (task.taskRunCount == 49) {
                         //Initialize and configure our search to execute our initial load
-                        me.configureSearchField(me);
+                        me.configureSearchField.call(me, me);
                     }
                 }
             },
@@ -195,9 +198,6 @@ Ext.define('System.view.job.tracker.dashboard.DashboardTreeGrid', {
         );
 
         treeGrid.store.sort('taskNumber', 'ASC');
-
-        System.util.component.GridColumnUtils.fullyInitializeStoreByModelName("Tasks");
-        System.util.component.GridColumnUtils.fullyInitializeStoreByModelName("Jobs");
 
     },
 

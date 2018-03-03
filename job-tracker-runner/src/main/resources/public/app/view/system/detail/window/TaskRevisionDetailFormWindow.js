@@ -41,25 +41,44 @@ Ext.define('System.view.system.detail.window.TaskRevisionDetailFormWindow', {
                     width: 900,
                     height: 450,
 
-                    newEntityDetailWindowDefaultValueFilters: [{
-                        "operator": "=",
-                        "value": me.initialFormRecord.data.id,
-                        "property": "task.id"
-                    }, {
-                        "operator": "=",
-                        "value": me.initialFormRecord.data.id,
-                        "property": "taskRevision.task.id"
-                    }, {
-                        "operator": "=",
-                        "value": System.util.system.UserUtils.getLoggedInEmployee().id,
-                        "property": "employee.id"
-                    }],
+                    /**
+                     * Default filter values used to set or filter various
+                     * fields on this form panel.
+                     *
+                     * They are represented in filter form but will be applied directly
+                     * as values to any non-combo box. If the property is a combo box
+                     * then it will be used to set the filterBy values on the combo.
+                     * */
+                    newEntityDetailWindowDefaultValueFilters: [
+                        {
+                            "operator": "=",
+                            "value": me.initialFormRecord.data.id,
+                            "property": "task.id"
+                        }, {
+                            "operator": "=",
+                            "value": me.initialFormRecord.data.id,
+                            "property": "taskRevision.task.id"
+                        }, {
+                            "operator": "=",
+                            "value": System.util.system.UserUtils.getLoggedInEmployee().id,
+                            "property": "employee.id"
+                        },
+                        {
+                            "operator": "=",
+                            "value": me.initialFormRecord.data.id,
+                            "property": "taskRevision.task.id"
+                        }
+                    ],
 
+                    /**
+                     * Defines the default search filter to apply to this store and filter box
+                     */
                     defaultSearchFilter: [
                         {"operator": "=", "value": fkFieldId, "property": "task.id"},
                         {"operator": "=", "value": fkFieldId, "property": "taskRevision.task.id"}
                     ],
                     defaultSearchFilterForced: true
+
                 }
             );
 

@@ -283,9 +283,9 @@ public class V18__configure_ui_defaults extends BaseDataMigration {
         );
 
         updateEntityUi(TaskHour.class,
-                update("task", "Task", "{allowBlank:false}", "{hidden:true}"),
+                update("task", "Task", "{maskIfInitialValueExists: true,allowBlank:false}", "{hidden:true}"),
 
-                update("taskRevision", "Revision", "{allowBlank:false,displayTpl: Ext.create('Ext.XTemplate', '<tpl for=\".\">', 'Rev {revisionNumber} - {name}', '</tpl>' )}", "{ filter: 'entity', displayRenderer: function (value, metaData) { var revNumber = System.util.data.RecordUtils.getRecordValue(metaData.record, 'revisionNumber', 'taskRevision'); if (revNumber != undefined) { value = 'Rev ' + revNumber + ' - ' + value; } return value; } }"),
+                update("taskRevision", "Revision", "{allowBlank:false,tpl: Ext.create('Ext.XTemplate', '<ul class=\"x-list-plain\"><tpl for=\".\">', '<li role=\"option\" class=\"x-boundlist-item\">Rev {revisionNumber} - {name}</li>', '</tpl></ul>' ),displayTpl: Ext.create('Ext.XTemplate', '<tpl for=\".\">', 'Rev {revisionNumber} - {name}', '</tpl>' )}", "{ filter: 'entity', displayRenderer: function (value, metaData) { var revNumber = System.util.data.RecordUtils.getRecordValue(metaData.record, 'revisionNumber', 'taskRevision'); if (revNumber != undefined) { value = 'Rev ' + revNumber + ' - ' + value; } return value; } }"),
 
                 update("date", "Date", "{xtype: 'datefield',anchor: '100%',value: new Date(),format: 'm-d-Y',allowBlank:false}"),
                 update("employee", "Employee", "{allowBlank:false}"),

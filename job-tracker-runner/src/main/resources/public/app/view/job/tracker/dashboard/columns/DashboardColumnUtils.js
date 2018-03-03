@@ -252,55 +252,13 @@ Ext.define('System.view.job.tracker.dashboard.columns.DashboardColumnUtils', {
                     flex: undefined,
                     maxWidth: 60,
                     handler: function (grid, rowIndex, colIndex, actionItem, e, record, row) {
-                        var taskMenu;
-                        var jobMenu;
-                        var modelName;
 
                         if (record.data.taskNumber) {
-                            //Task
-                            modelName = 'Tasks';
-                            taskMenu = new Ext.menu.Menu({items: []});
-                            System.util.component.ToolbarUtils.populateExportReportMenuItems(taskMenu, modelName);
+                            System.util.export.report.ExportUtils.populateAndShowExportMenu(e, record, 'Tasks', 'Task Reports', 'fa fa-tasks');
                         } else {
-                            //Job
-                            modelName = 'Jobs';
-                            jobMenu = new Ext.menu.Menu({items: []});
-                            System.util.component.ToolbarUtils.populateExportReportMenuItems(jobMenu, modelName);
+                            System.util.export.report.ExportUtils.populateAndShowExportMenu(e, record, 'Jobs', 'Job Reports', 'fa fa-clipboard');
                         }
 
-                        var reportMenu = new Ext.menu.Menu({
-                            reportRecord: {
-                                store: System.util.data.StoreUtils.lookupStore(modelName),
-                                id: record.data.entityId
-                            },
-                            items: [],
-
-                            listeners: {
-                                hide: function () {
-                                    setTimeout(function () {
-                                        reportMenu.destroy();
-                                    }, 2000);
-                                }
-                            }
-                        });
-
-                        if (taskMenu) {
-                            reportMenu.add({
-                                text: 'Task Reports',
-                                iconCls: 'fa fa-tasks',
-                                menu: taskMenu
-                            });
-                        }
-
-                        if (jobMenu) {
-                            reportMenu.add({
-                                text: 'Job Reports',
-                                iconCls: 'fa fa-clipboard',
-                                menu: jobMenu
-                            });
-                        }
-
-                        reportMenu.showAt(e.getXY());
                     },
                     getTip: function (v, meta, record) {
                         return 'Document Export';

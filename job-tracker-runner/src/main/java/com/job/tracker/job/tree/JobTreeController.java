@@ -29,10 +29,12 @@ public class JobTreeController {
     public ResponseEntity<?> getJobSearchResult(String filter, Integer searchDepth, String[] extraSearchParams) {
         JobResponseBody result = new JobResponseBody();
 
-        Set<Job> jobSet = new HashSet<>(jobRepository.findAll(filter, searchDepth, extraSearchParams, Pageable.unpaged()).getContent());
-        Set<Task> taskSet = new HashSet<>(taskRepository.findAll(filter, searchDepth, extraSearchParams, Pageable.unpaged()).getContent());
+        if (searchDepth == null || searchDepth != -1) {
+            Set<Job> jobSet = new HashSet<>(jobRepository.findAll(filter, searchDepth, extraSearchParams, Pageable.unpaged()).getContent());
+            Set<Task> taskSet = new HashSet<>(taskRepository.findAll(filter, searchDepth, extraSearchParams, Pageable.unpaged()).getContent());
 
-        result.setChildren(getTaskToJobList(taskSet, jobSet, filter));
+            result.setChildren(getTaskToJobList(taskSet, jobSet, filter));
+        }
 
         return ResponseEntity.ok(result);
     }

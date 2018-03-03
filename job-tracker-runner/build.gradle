@@ -5,22 +5,17 @@ dependencies {
     compile group: 'org.flywaydb', name: 'flyway-core', version: '4.2.0'
 
     compile group: 'com.zaxxer', name: 'HikariCP', version: '2.7.4'
-/*    compile group: 'io.dropwizard.metrics', name: 'metrics-logback', version: '4.0.0'
-    compile group: 'io.dropwizard.metrics', name: 'metrics-ehcache', version: '4.0.0'
-    compile group: 'io.dropwizard.metrics', name: 'metrics-servlets', version: '4.0.0'
-    compile group: 'io.dropwizard.metrics', name: 'metrics-healthchecks', version: '4.0.0'
-    compile group: 'io.dropwizard.metrics', name: 'metrics-json', version: '4.0.0'
-    compile group: 'io.dropwizard.metrics', name: 'metrics-jvm', version: '4.0.0'
-    compile group: 'io.dropwizard.metrics', name: 'metrics-core', version: '4.0.0'*/
+
 
 }
 
 ext {
     mainClassName = 'com.job.tracker.JobTrackerRunner'
+    if (project.hasProperty('jvmArgs')) {
+        applicationDefaultJvmArgs = (project.jvmArgs.split("\\s+") as List)
+    }
 }
 
-bootRun {
-    if (project.hasProperty('jvmArgs')) {
-        jvmArgs = (project.jvmArgs.split("\\s+") as List)
-    }
+springBoot {
+    mainClassName = 'com.job.tracker.JobTrackerRunner'
 }

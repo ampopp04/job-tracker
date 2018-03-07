@@ -1,0 +1,118 @@
+{
+  "name": "System",
+  "namespace": "System",
+  "version": "1.0.0.0",
+  "framework": "ext",
+  "toolkit": "classic",
+  "theme": "theme-triton",
+  "requires": [
+    "font-awesome"
+  ],
+  "indexHtmlPath": "index.html",
+  "temp": {
+    "dir": "../public/${workspace.build.dir}/temp/${package.name}"
+  },
+  "overrides": [
+    "overrides"
+  ],
+  "fashion": {
+    "missingParameters": "error",
+    "inliner": {
+      "enable": true
+    }
+  },
+  "sass": {
+    "namespace": "System",
+    "generated": {
+      "var": "sass/save.scss",
+      "src": "sass/save"
+    },
+    "etc": [
+      "sass/etc/all.scss"
+    ],
+    "var": [
+      "sass/var/all.scss",
+      "sass/var"
+    ],
+    "src": [
+      "sass/src"
+    ]
+  },
+  "js": [
+    {
+      "path": "resources/lz4.min.js",
+      "update": "full",
+      "includeInBundle": true
+    },
+    {
+      "path": "app.js",
+      "bundle": true,
+      "update": "full"
+    }
+  ],
+  "css": [
+    {
+      "path": "${build.out.css.path}",
+      "bundle": true,
+      "exclude": [
+        "fashion"
+      ],
+      "update": "full"
+    },
+    {
+      "path": "resources/System-all-override_1.css",
+      "includeInBundle": true
+    },
+    {
+      "path": "resources/System-all-override_2.css",
+      "includeInBundle": true
+    }
+  ],
+  "loader": {
+    "cache": true,
+    "cacheParam": "_dc"
+  },
+  "production": {
+    "compressor": {
+      "type": "cmd"
+    }
+  },
+  "testing": {
+  },
+  "development": {
+  },
+  "bootstrap": {
+    "base": "${app.dir}",
+    "microloader": "bootstrap.js",
+    "css": "bootstrap.css"
+  },
+  "output": {
+    "base": "../public",
+    "manifest": {
+      "embed": true
+    },
+    "appCache": {
+      "enable": true
+    }
+  },
+  "cache": {
+    "enable": true
+  },
+  "appCache": {
+    "cache": [
+      "index.html"
+    ],
+    "network": [
+      "*"
+    ],
+    "fallback": []
+  },
+  "resources": [
+  ],
+  "archivePath": "archive",
+  "slicer": null,
+  "ignore": [
+    "(^|/)CVS(/?$|/.*?$)"
+  ],
+  "id": "711886a6-b652-464a-b9a0-09ee1593d24A"
+}

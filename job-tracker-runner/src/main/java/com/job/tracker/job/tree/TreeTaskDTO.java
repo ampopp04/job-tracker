@@ -8,7 +8,17 @@ import java.time.LocalDate;
 
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
+/**
+ * The <class>TreeTaskDTO</class> defines a virtual
+ * DTO used for the dashboard tree grid view.
+ *
+ * @author Andrew Popp
+ */
 public class TreeTaskDTO {
+
+    ///////////////////////////////////////////////////////////////////////
+    ////////                                                     Properties                                                       //////////
+    //////////////////////////////////////////////////////////////////////
 
     private String iconCls = "tree-grid-task";
 
@@ -45,6 +55,10 @@ public class TreeTaskDTO {
 
     private String status;
 
+    ///////////////////////////////////////////////////////////////////////
+    ////////                                              Default Constructor                                           //////////
+    //////////////////////////////////////////////////////////////////////
+
     private TreeTaskDTO() {
     }
 
@@ -78,6 +92,10 @@ public class TreeTaskDTO {
 
         return treeTaskDTO;
     }
+
+    ///////////////////////////////////////////////////////////////////////
+    ////////                                             Basic   Getter/Setters                                          //////////
+    //////////////////////////////////////////////////////////////////////
 
     public String getIconCls() {
         return iconCls;

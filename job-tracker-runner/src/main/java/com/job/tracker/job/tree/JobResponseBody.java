@@ -2,10 +2,26 @@ package com.job.tracker.job.tree;
 
 import java.util.List;
 
+/**
+ * The <class>JobResponseBody</class> defines a wrapper
+ * object for housing the tree like structure of our dashboard
+ * tree grid view response data.
+ *
+ * @author Andrew Popp
+ */
 public class JobResponseBody {
+
+    ///////////////////////////////////////////////////////////////////////
+    ////////                                                     Properties                                                       //////////
+    //////////////////////////////////////////////////////////////////////
+
     private String text = ".";
     private List<TreeJobDTO> children;
     private Boolean expanded = false;
+
+    ///////////////////////////////////////////////////////////////////////
+    ////////                                             Basic   Getter/Setters                                          //////////
+    //////////////////////////////////////////////////////////////////////
 
     public String getText() {
         return text;

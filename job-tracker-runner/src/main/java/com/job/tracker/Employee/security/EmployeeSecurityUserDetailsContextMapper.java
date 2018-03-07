@@ -24,7 +24,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import static com.job.tracker.Employee.security.util.LdapDataAccessUtils.*;
+import static com.system.security.ldap.LdapDataAccessUtils.*;
 import static com.system.util.string.StringUtils.isEmpty;
 
 /**
@@ -153,7 +153,6 @@ public class EmployeeSecurityUserDetailsContextMapper extends SystemSecurityUser
     }
 
     private List<SystemSecurityRole> getSystemSecurityRoleList() {
-        // SystemSecurityRole adminRole = getSystemSecurityRoleRepository().findByName(SystemSecurityRoles.ROLE_ADMIN.toString());
         SystemSecurityRole userRole = getSystemSecurityRoleRepository().findByName(SystemSecurityRoles.ROLE_USER.toString());
         return Arrays.asList(userRole);
     }

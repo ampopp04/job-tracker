@@ -19,6 +19,5 @@ public interface TaskRepository extends NamedEntityRepository<Task> {
      * @param jobId
      * @return - list of tasks filtered by job id
      */
-    //TODO: caching
     public List<Task> findByJobId(Integer jobId);
 }

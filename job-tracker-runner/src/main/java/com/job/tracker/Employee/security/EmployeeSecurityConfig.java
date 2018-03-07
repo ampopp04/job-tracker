@@ -9,7 +9,7 @@ import org.springframework.security.ldap.userdetails.LdapUserDetailsMapper;
 
 /**
  * The <class>SystemSecurityConfiguration</class> defines
- * the default configuration for this project
+ * the default employee security configuration for this project
  *
  * @author Andrew
  */

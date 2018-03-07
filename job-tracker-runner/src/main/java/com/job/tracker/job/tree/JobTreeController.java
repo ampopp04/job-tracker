@@ -16,14 +16,32 @@ import java.util.*;
 import static com.system.util.collection.CollectionUtils.iterable;
 import static com.system.util.collection.CollectionUtils.iterate;
 
+/**
+ * The <class>JobTreeController</class> defines a web UI
+ * exposed WS controller used
+ * for serving virtual DTOs encapsulating data
+ * that is to be used for the dashboard tree view.
+ * <p>
+ * This controller provides advanced search functionality on this grid.
+ *
+ * @author Andrew Popp
+ */
 @RestController
 public class JobTreeController {
+
+    ///////////////////////////////////////////////////////////////////////
+    ////////                                                     Properties                                                       //////////
+    //////////////////////////////////////////////////////////////////////
 
     @Autowired
     private SystemRepository<Job, Integer> jobRepository;
 
     @Autowired
     private TaskRepository taskRepository;
+
+    ///////////////////////////////////////////////////////////////////////
+    ////////                                           Search Method                                                       //////////
+    //////////////////////////////////////////////////////////////////////
 
     @GetMapping("/ajax/job/search")
     public ResponseEntity<?> getJobSearchResult(String filter, Integer searchDepth, String[] extraSearchParams) {
@@ -38,6 +56,10 @@ public class JobTreeController {
 
         return ResponseEntity.ok(result);
     }
+
+    ///////////////////////////////////////////////////////////////////////
+    ////////                                          Support Method                                                      //////////
+    //////////////////////////////////////////////////////////////////////
 
     private List<TreeJobDTO> getTaskToJobList(Set<Task> taskSet, Set<Job> jobSet, String filter) {
         Map<Integer, TreeJobDTO> treeJobDTOIdMap = new HashMap<>();
@@ -71,6 +93,10 @@ public class JobTreeController {
         }
         return true;
     }
+
+    ///////////////////////////////////////////////////////////////////////
+    ////////                                             Basic   Getter/Setters                                          //////////
+    //////////////////////////////////////////////////////////////////////
 
     public SystemRepository<Job, Integer> getJobRepository() {
         return jobRepository;

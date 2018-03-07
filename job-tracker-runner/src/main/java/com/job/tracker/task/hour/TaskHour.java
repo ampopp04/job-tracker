@@ -16,7 +16,7 @@ import java.time.LocalDate;
  * The <class>TaskHour</class> defines a
  * record of hours for a given task
  * and engineer. An engineer(employee)
- * will record their hours work for a specific task.
+ * will record their work hours for a specific task.
  *
  * @author Andrew Popp
  */

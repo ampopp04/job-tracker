@@ -8,7 +8,17 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The <class>TreeJobDTO</class> defines a virtual
+ * DTO used for the dashboard tree grid view.
+ *
+ * @author Andrew Popp
+ */
 public class TreeJobDTO {
+
+    ///////////////////////////////////////////////////////////////////////
+    ////////                                                     Properties                                                       //////////
+    //////////////////////////////////////////////////////////////////////
 
     private String iconCls = "tree-grid-task-folder";
 
@@ -31,6 +41,10 @@ public class TreeJobDTO {
     private String projectName;
 
     private List<TreeTaskDTO> children;
+
+    ///////////////////////////////////////////////////////////////////////
+    ////////                                              Default Constructor                                           //////////
+    //////////////////////////////////////////////////////////////////////
 
     public TreeJobDTO() {
     }
@@ -61,6 +75,10 @@ public class TreeJobDTO {
         ValidationUtils.assertNotNull(job.getProject().getBranch(), "Project missing branch. Please set branch on project [" + job.getProject().getProjectNumber() + "]");
         return job.getProject().getBranch().getCode() + "" + job.getProject().getProjectNumber() + "" + job.getJobNumber();
     }
+
+    ///////////////////////////////////////////////////////////////////////
+    ////////                                             Basic   Getter/Setters                                          //////////
+    //////////////////////////////////////////////////////////////////////
 
     public String getIconCls() {
         return iconCls;

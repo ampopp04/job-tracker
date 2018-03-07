@@ -19,7 +19,7 @@ import static com.system.logging.exception.util.ExceptionUtils.throwSystemExcept
 import static javax.persistence.FetchType.EAGER;
 
 /**
- * The <class>Job</class> defines a job that needs to be managed by
+ * The <class>Task</class> defines a task that needs to be managed by
  * project management.
  *
  * @author Andrew Popp

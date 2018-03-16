@@ -13,14 +13,7 @@ Ext.define('Ext.fx.Manager', {
 
     requires: [
         'Ext.util.MixedCollection',
-        'Ext.util.TaskRunner',
-        'Ext.fx.target.Element',
-        'Ext.fx.target.ElementCSS',
-        'Ext.fx.target.CompositeElement',
-        'Ext.fx.target.CompositeElementCSS',
-        'Ext.fx.target.Sprite',
-        'Ext.fx.target.CompositeSprite',
-        'Ext.fx.target.Component'
+        'Ext.util.TaskRunner'
     ],
 
     mixins: {

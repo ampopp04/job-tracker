@@ -13,7 +13,14 @@ Ext.define('Ext.fx.Manager', {
 
     requires: [
         'Ext.util.MixedCollection',
-        'Ext.util.TaskRunner'
+        'Ext.util.TaskRunner',
+        'Ext.fx.target.Element',
+        'Ext.fx.target.ElementCSS',
+        'Ext.fx.target.CompositeElement',
+        'Ext.fx.target.CompositeElementCSS',
+        'Ext.fx.target.Sprite',
+        'Ext.fx.target.CompositeSprite',
+        'Ext.fx.target.Component'
     ],
 
     mixins: {
@@ -25,12 +32,12 @@ Ext.define('Ext.fx.Manager', {
     /**
      * @private
      */
-    constructor: function() {
+    constructor: function () {
         var me = this;
         me.items = new Ext.util.MixedCollection();
         me.targetArr = {};
         me.mixins.queue.constructor.call(me);
-        
+
         // Do not use fireIdleEvent: false. Each tick of the TaskRunner needs to fire the idleEvent
         // in case an animation callback/listener adds a listener.
         me.taskRunner = new Ext.util.TaskRunner();
@@ -53,7 +60,7 @@ Ext.define('Ext.fx.Manager', {
      * @private
      * Target Factory
      */
-    createTarget: function(target) {
+    createTarget: function (target) {
         var me = this,
             useCSS3 = !me.forceJS && Ext.supports.Transitions,
             targetObj;
@@ -104,7 +111,7 @@ Ext.define('Ext.fx.Manager', {
      * Add an Anim to the manager. This is done automatically when an Anim instance is created.
      * @param {Ext.fx.Anim} anim
      */
-    addAnim: function(anim) {
+    addAnim: function (anim) {
         var me = this,
             items = me.items,
             task = me.task;
@@ -131,14 +138,14 @@ Ext.define('Ext.fx.Manager', {
      * Remove an Anim from the manager. This is done automatically when an Anim ends.
      * @param {Ext.fx.Anim} anim
      */
-    removeAnim: function(anim) {
+    removeAnim: function (anim) {
         var me = this,
             items = me.items,
             task = me.task;
-                
+
         items.removeAtKey(anim.id);
         //Ext.log('    X removed anim ', anim.id, ', target: ', anim.target.getId(), ', frames: ', anim.frameCount, ', item count: ', items.length);
-        
+
         // Stop the timer if there are no more managed Anims
         if (task && !items.length) {
             //Ext.log('[]--- Stopping task');
@@ -151,7 +158,7 @@ Ext.define('Ext.fx.Manager', {
      * @private
      * Runner function being called each frame
      */
-    runner: function() {
+    runner: function () {
         var me = this,
             items = me.items.getRange(),
             i = 0,
@@ -163,7 +170,7 @@ Ext.define('Ext.fx.Manager', {
 
         // Single timestamp for all animations this interval
         me.timestamp = new Date();
-        
+
         // Loop to start any new animations first before looping to
         // execute running animations (which will also include all animations
         // started in this loop). This is a subtle difference from simply
@@ -176,34 +183,34 @@ Ext.define('Ext.fx.Manager', {
         // interdependent, which is often the case with certain Element fx.
         for (; i < len; i++) {
             anim = items[i];
-            
+
             if (anim.isReady()) {
                 //Ext.log('      starting anim ', anim.id, ', target: ', anim.target.id);
                 me.startAnim(anim);
             }
         }
-        
+
         for (i = 0; i < len; i++) {
             anim = items[i];
-            
+
             if (anim.isRunning()) {
                 //Ext.log('      running anim ', anim.target.id);
                 me.runAnim(anim);
             }
             //<debug>
             //else if (!me.useCSS3) {
-                // When using CSS3 transitions the animations get paused since they are not
-                // needed once the transition is handed over to the browser, so we can
-                // ignore this case. However if we are doing JS animations and something is
-                // paused here it's possibly unintentional.
-                //Ext.log(' (i)  anim ', anim.id, ' is active but not running...');
+            // When using CSS3 transitions the animations get paused since they are not
+            // needed once the transition is handed over to the browser, so we can
+            // ignore this case. However if we are doing JS animations and something is
+            // paused here it's possibly unintentional.
+            //Ext.log(' (i)  anim ', anim.id, ' is active but not running...');
             //}
             //</debug>
         }
 
         // Apply all the pending changes to their targets
         me.applyPendingAttrs();
-        
+
         // Avoid retaining target references after we are finished with anims
         me.targetArr = null;
     },
@@ -212,7 +219,7 @@ Ext.define('Ext.fx.Manager', {
      * @private
      * Start the individual animation (initialization)
      */
-    startAnim: function(anim) {
+    startAnim: function (anim) {
         anim.start(this.timestamp);
     },
 
@@ -220,7 +227,7 @@ Ext.define('Ext.fx.Manager', {
      * @private
      * Run the individual animation for this frame
      */
-    runAnim: function(anim, forceEnd) {
+    runAnim: function (anim, forceEnd) {
         if (!anim) {
             return;
         }
@@ -229,19 +236,19 @@ Ext.define('Ext.fx.Manager', {
             elapsedTime = me.timestamp - anim.startTime,
             lastFrame = (elapsedTime >= anim.duration),
             target, o;
-            
+
         if (forceEnd) {
             elapsedTime = anim.duration;
             lastFrame = true;
         }
 
         target = me.collectTargetData(anim, elapsedTime, useCSS3, lastFrame);
-        
+
         // For CSS3 animation, we need to immediately set the first frame's attributes without any transition
         // to get a good initial state, then add the transition properties and set the final attributes.
         if (useCSS3) {
             //Ext.log(' (i)  using CSS3 transitions');
-            
+
             // Flush the collected attributes, without transition
             anim.target.setAttr(target.anims[anim.id].attributes, true);
 
@@ -266,8 +273,8 @@ Ext.define('Ext.fx.Manager', {
         }
         return target;
     },
-    
-    jumpToEnd: function(anim) {
+
+    jumpToEnd: function (anim) {
         var me = this,
             target, clear;
 
@@ -295,10 +302,10 @@ Ext.define('Ext.fx.Manager', {
      * @return {Object} The animation target wrapper object containing the passed animation along with the
      * new attributes to set on the target's element in the next animation frame.
      */
-    collectTargetData: function(anim, elapsedTime, useCSS3, isLastFrame) {
+    collectTargetData: function (anim, elapsedTime, useCSS3, isLastFrame) {
         var targetId = anim.target.getId(),
             target = this.targetArr[targetId];
-        
+
         if (!target) {
             // Create a thin wrapper around the target so that we can create a link between the
             // target element and its associated animations. This is important later when applying
@@ -329,49 +336,49 @@ Ext.define('Ext.fx.Manager', {
                 attrs: anim.runAnim(elapsedTime)
             }]
         };
-        
+
         return target;
     },
-    
+
     // Duplicating this code for performance reasons. We only want to apply the anims
     // to a single animation because we're hitting the end. It may be out of sequence from
     // the runner timer.
-    applyAnimAttrs: function(target, animWrap) {
+    applyAnimAttrs: function (target, animWrap) {
         var anim = animWrap.anim;
         if (animWrap.attributes && anim.isRunning()) {
             target.el.setAttr(animWrap.attributes, false, animWrap.isLastFrame);
-                            
+
             // If this particular anim is at the last frame end it
             if (animWrap.isLastFrame) {
                 anim.lastFrame();
             }
         }
     },
-    
+
     /**
      * @private
      * Apply all pending attribute changes to their targets
      */
-    applyPendingAttrs: function() {
+    applyPendingAttrs: function () {
         var targetArr = this.targetArr,
             target, targetId, animWrap, anim, animId;
-        
+
         // Loop through each target
         for (targetId in targetArr) {
             if (targetArr.hasOwnProperty(targetId)) {
                 target = targetArr[targetId];
-                
+
                 // Each target could have multiple associated animations, so iterate those
                 for (animId in target.anims) {
                     if (target.anims.hasOwnProperty(animId)) {
                         animWrap = target.anims[animId];
                         anim = animWrap.anim;
-                        
+
                         // If the animation has valid attributes, set them on the target
                         if (animWrap.attributes && anim.isRunning()) {
                             //Ext.log('  >   applying attributes for anim ', animWrap.id, ', target: ', target.id, ', elapsed: ', animWrap.elapsed);
                             target.el.setAttr(animWrap.attributes, false, animWrap.isLastFrame);
-                            
+
                             // If this particular anim is at the last frame end it
                             if (animWrap.isLastFrame) {
                                 //Ext.log('      running last frame for ', animWrap.id, ', target: ', targetId);
@@ -383,8 +390,8 @@ Ext.define('Ext.fx.Manager', {
             }
         }
     },
-    
-    clear: function() {
+
+    clear: function () {
         var me = this;
 
         if (me.taskRunner) {

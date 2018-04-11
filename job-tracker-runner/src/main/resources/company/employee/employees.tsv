@@ -1,2 +1,2 @@
 name	description	firstName	lastName	jobTitle	company	branch	department	streetAddress	city	state	zipCode	country	businessPhone	mobilePhone	emailAddress	manager	enabled	passwordExpired	systemSecurityUser
-Andrew Popp	Production	Andrew	Popp		CompanyName	Minneapolis	Production	32148 Southern St	Minneapolis	MN	55129	US	(123) 456-7890		ampopp04@CompanyName.com		True	False	Andrew Popp
+John Menard	Production	John	Menard		CompanyName	Minneapolis	Production	32148 Southern St	Minneapolis	MN	55129	US	(123) 456-7890		jmmenard04@CompanyName.com		True	False	John Menard

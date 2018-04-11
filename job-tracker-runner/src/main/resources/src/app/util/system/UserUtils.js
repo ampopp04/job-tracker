@@ -79,7 +79,7 @@ Ext.define('System.util.system.UserUtils', {
                                     employeeRecord._branch && employeeRecord._branch.data && employeeRecord._branch.data.name ?
                                         employeeRecord._branch.data.name : employeeRecord.branch && employeeRecord.branch && employeeRecord.branch.name ?
                                         employeeRecord.branch.name : employeeRecord.data && employeeRecord.data.branch && employeeRecord.data.branch.name ?
-                                            employeeRecord.data.branch.name : "La Mirada";
+                                            employeeRecord.data.branch.name : "Minneapolis";
                             }
 
                             localStorage.setItem("loggedInEmployee", Ext.JSON.encode({

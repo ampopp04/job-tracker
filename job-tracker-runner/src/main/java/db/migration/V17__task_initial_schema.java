@@ -114,19 +114,19 @@ public class V17__task_initial_schema extends TableCreationMigration {
 
     public List<Branch> getBranchData() {
         return asList(
-                Branch.newBasicInstance("La Mirada", "LM", "\\\\LMFS2\\dfs3\\Projects\\"),
-                Branch.newBasicInstance("Charlotte", "CH", "\\\\LMFS2\\dfs3\\Projects\\"),
-                Branch.newBasicInstance("Fife", "FI", "\\\\LMFS2\\dfs3\\Projects\\"),
-                Branch.newBasicInstance("Fremont", "FR", "\\\\LMFS2\\dfs3\\Projects\\"),
-                Branch.newBasicInstance("Portland", "PO", "\\\\LMFS2\\dfs3\\Projects\\"),
-                Branch.newBasicInstance("Chicago", "CI", "\\\\LMFS2\\dfs3\\Projects\\"),
-                Branch.newBasicInstance("Las Vegas", "LV", "\\\\LMFS2\\dfs3\\Projects\\"),
-                Branch.newBasicInstance("New York", "NY", "\\\\LMFS2\\dfs3\\Projects\\"),
-                Branch.newBasicInstance("Phoenix", "PH", "\\\\LMFS2\\dfs3\\Projects\\"),
-                Branch.newBasicInstance("Puerto Rico", "PR", "\\\\LMFS2\\dfs3\\Projects\\"),
-                Branch.newBasicInstance("Sacramento", "SA", "\\\\LMFS2\\dfs3\\Projects\\"),
-                Branch.newBasicInstance("Texas", "TX", "\\\\LMFS2\\dfs3\\Projects\\"),
-                Branch.newBasicInstance("San Diego", "SD", "\\\\LMFS2\\dfs3\\Projects\\")
+                Branch.newBasicInstance("Minneapolis", "MN", "\\\\YOURFILESHARE\\Projects\\"),
+                Branch.newBasicInstance("Charlotte", "CH", "\\\\YOURFILESHARE\\Projects\\"),
+                Branch.newBasicInstance("Fife", "FI", "\\\\YOURFILESHARE\\Projects\\"),
+                Branch.newBasicInstance("Fremont", "FR", "\\\\YOURFILESHARE\\Projects\\"),
+                Branch.newBasicInstance("Portland", "PO", "\\\\YOURFILESHARE\\Projects\\"),
+                Branch.newBasicInstance("Chicago", "CI", "\\\\YOURFILESHARE\\Projects\\"),
+                Branch.newBasicInstance("Las Vegas", "LV", "\\\\YOURFILESHARE\\Projects\\"),
+                Branch.newBasicInstance("New York", "NY", "\\\\YOURFILESHARE\\Projects\\"),
+                Branch.newBasicInstance("Phoenix", "PH", "\\\\YOURFILESHARE\\Projects\\"),
+                Branch.newBasicInstance("Puerto Rico", "PR", "\\\\YOURFILESHARE\\Projects\\"),
+                Branch.newBasicInstance("Sacramento", "SA", "\\\\YOURFILESHARE\\Projects\\"),
+                Branch.newBasicInstance("Texas", "TX", "\\\\YOURFILESHARE\\Projects\\"),
+                Branch.newBasicInstance("San Diego", "SD", "\\\\YOURFILESHARE\\Projects\\")
         );
     }
 

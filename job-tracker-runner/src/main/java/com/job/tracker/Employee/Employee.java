@@ -13,42 +13,6 @@ import javax.persistence.ManyToOne;
 /**
  * The <class>Employee</class> represents
  * an employee of this company
- * <p>
- * A.D. Raw Data Ex.
- * {
- * "Name":  "Basem Samuel",
- * "Description":  "ISAT",
- * <p>
- * "GivenName":  "Basem",
- * "Surname":  "Samuel",
- * "Title":  "Senior Technical Support Engineer",
- * <p>
- * "Company":  "ISAT",
- * "Office":  "La Mirada",
- * "Department":  "Engineering",
- * <p>
- * "StreetAddress":  "14848 Northam St",
- * "City":  "La Mirada",
- * "State":  "CA",
- * "PostalCode":  "90638",
- * "Country":  "US",
- * <p>
- * "OfficePhone":  "(714) 523-1771 x3007",
- * "MobilePhone":  "(714) 514-9233",
- * <p>
- * "EmailAddress":  "bsamuel@isatsb.com",
- * <p>
- * "Manager":  "CN=Tim Moran,OU=Laptop Users,OU=La Mirada,DC=Tomarco,DC=local",
- * <p>
- * "Enabled":  true,
- * "PasswordExpired":  false,
- * <p>
- * //SystemSecurityUser login and roles
- * "SamAccountName":  "bsamuel",
- * "MemberOf":  [
- * array of member cn's
- * ]
- * }
  *
  * @author Andrew Popp
  */
@@ -58,11 +22,6 @@ public class Employee extends NamedEntity<Integer> {
     ////////                                                     Properties                                                       //////////
     //////////////////////////////////////////////////////////////////////
 
-    //Name,Description,
-    //----inherited
-
-    // SamAccountName,
-    // MemberOf
     /**
      * Linked from ActiveDirectory SamAccountName
      */
@@ -70,7 +29,6 @@ public class Employee extends NamedEntity<Integer> {
     @JoinColumn(name = "system_security_user_id")
     private SystemSecurityUser systemSecurityUser;
 
-    //Company,Office,Department,
     private String company;
 
     @ManyToOne
@@ -81,7 +39,6 @@ public class Employee extends NamedEntity<Integer> {
     @JoinColumn(name = "department_id")
     private Department department;
 
-    //EmailAddress
     private String emailAddress;
 
     //GivenName,Surname,Title,

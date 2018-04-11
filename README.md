@@ -6,8 +6,16 @@ This sample shows a basic Project Management application and how you can easily 
 
 Although the framework does almost everything for you, the entire project is entirely customizable using standard spring and java practices.
 
+
+## Note
+
+Review the guide and screenshots of the Java Enterprise System Framework to get a better understanding of how this project works under the covers. - https://github.com/ampopp04/system
+
+
 ## Deployment
+
 Please see README for the Java Enterprise System Framework - https://github.com/ampopp04/system
+
 
 ## Screenshots
 
